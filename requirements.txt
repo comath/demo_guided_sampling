@@ -4,3 +4,6 @@ diffusers
 tqdm
 pillow
 gradio
+torch
+torchvision
+fastapi

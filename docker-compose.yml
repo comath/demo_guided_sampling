@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  demo:
+    build: .
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0"]
+    volumes:
+      - ./:/app/

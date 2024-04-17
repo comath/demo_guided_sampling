@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Description</title>
+    <script src="https://unpkg.com/htmx.org@1.8.4"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #333;
+        }
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .description-container {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Description</h1>
+        <div class="image-container">
+            <img id="image-preview" src="#" alt="Uploaded Image" style="display: none;">
+        </div>
+        <div class="description-container">
+            <p id="description-text"></p>
+        </div>
+        <input type="file" id="image-input" accept="image/*" hx-post="/describe" hx-ws="connect:/describe" hx-target="#description-text" hx-swap="beforeend">
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('image-input');
+        const imagePreview = document.getElementById('image-preview');
+        const descriptionText = document.getElementById('description-text');
+
+        // WebSocket connection
+        const socket = new WebSocket(`ws://${window.location.host}/describe`);
+
+        // Handle incoming words
+        socket.addEventListener('message', (event) => {
+            const word = event.data;
+            descriptionText.textContent += ` ${word}`;
+        });
+
+        // Handle file input change
+        imageInput.addEventListener('change', () => {
+            const file = imageInput.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            imagePreview.src = imageUrl;
+            imagePreview.style.display = 'block';
+
+            // Send the image to the server
+            socket.send(file);
+        });
+    </script>
+</body>
+</html>
