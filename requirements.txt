@@ -1,0 +1,6 @@
+transformers
+tokenizers
+diffusers
+tqdm
+pillow
+gradio
