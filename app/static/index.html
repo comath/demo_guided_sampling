@@ -73,7 +73,7 @@
         // Handle incoming words
         socket.addEventListener('message', (event) => {
             const word = event.data;
-            descriptionText.textContent += ` ${word}`;
+            descriptionText.textContent = ` ${word}`;
         });
 
         // Handle file input change

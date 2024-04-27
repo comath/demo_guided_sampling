@@ -15,7 +15,7 @@ stable_diff_version = "stabilityai/stable-diffusion-2-base"
 clip_version = "laion/CLIP-ViT-H-14-laion2B-s32B-b79K"
 gpt_version = "gpt2"
 start_string = "An image of "
-device = "cpu"
+device = "cuda"
 
 top_k = 2500
 seed = 42
@@ -73,7 +73,7 @@ async def describe_image(websocket: WebSocket):
                 clip_model,
                 processor,
                 clip_img_emb,
-                max_length=6,
+                max_length=25,
                 verbose=False,
                 ret_last=True,
                 greedy=True,
